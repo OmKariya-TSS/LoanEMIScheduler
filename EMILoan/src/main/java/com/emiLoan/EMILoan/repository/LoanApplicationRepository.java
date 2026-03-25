@@ -1,4 +1,6 @@
 package com.emiLoan.EMILoan.repository;
 
-public class LoanApplicationRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LoanApplicationRepository extends JpaRepository<LoanApplication, Long> {
 }

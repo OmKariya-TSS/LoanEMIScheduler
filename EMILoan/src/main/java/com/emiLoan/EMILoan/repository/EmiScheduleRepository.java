@@ -2,5 +2,5 @@ package com.emiLoan.EMILoan.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmiSchedule implements JpaRepository<Emi, Long> {
+public interface EmiScheduleRepository extends JpaRepository<EmiSchedule, Long> {
 }

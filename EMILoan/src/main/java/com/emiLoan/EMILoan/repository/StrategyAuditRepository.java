@@ -1,4 +1,6 @@
 package com.emiLoan.EMILoan.repository;
 
-public interface StrategyAuditRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StrategyAuditRepository extends JpaRepository<StrategyAudit, Long> {
 }
