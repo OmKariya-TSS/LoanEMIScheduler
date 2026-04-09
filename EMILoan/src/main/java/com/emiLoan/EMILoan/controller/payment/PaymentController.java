@@ -66,14 +66,14 @@ public class PaymentController {
 
         @GetMapping("/history/my")
         @PreAuthorize("hasRole('BORROWER')")
-        public ResponseEntity<ApiResponse<List<PaymentHistoryResponse>>> getMyPaymentHistory(
+        public ResponseEntity<ApiResponse<Page<PaymentHistoryResponse>>> getMyPaymentHistory(
                 @AuthenticationPrincipal UserDetails userDetails,
                 HttpServletRequest httpServletRequest,
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "10") int size
                 ) {
                 Pageable pageable = PageRequest.of(page, size);
-                List<PaymentHistoryResponse> response = paymentService.getBorrowerPaymentHistory(userDetails.getUsername(),pageable);
+                Page<PaymentHistoryResponse> response = paymentService.getBorrowerPaymentHistory(userDetails.getUsername(),pageable);
 
                 return ResponseEntity.ok(ApiResponse.of(
                         HttpStatus.OK,
@@ -102,11 +102,14 @@ public class PaymentController {
 
         @GetMapping("/history/all")
         @PreAuthorize("hasAnyRole('LOAN_OFFICER', 'ADMIN')")
-        public ResponseEntity<ApiResponse<List<PaymentHistoryResponse>>> getAllPayments(
+        public ResponseEntity<ApiResponse<Page<PaymentHistoryResponse>>> getAllPayments(
                 @AuthenticationPrincipal UserDetails userDetails,
-                HttpServletRequest httpServletRequest
+                HttpServletRequest httpServletRequest,
+                @RequestParam(defaultValue = "0") int page,
+                @RequestParam(defaultValue = "10") int size
         ) {
-                List<PaymentHistoryResponse> response = paymentService.getAllPayments(userDetails.getUsername());
+                Pageable pageable = PageRequest.of(page, size);
+                Page<PaymentHistoryResponse> response = paymentService.getAllPayments(userDetails.getUsername(),pageable);
 
                 return ResponseEntity.ok(ApiResponse.of(
                         HttpStatus.OK,

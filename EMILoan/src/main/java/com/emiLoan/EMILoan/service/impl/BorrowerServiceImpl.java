@@ -17,6 +17,8 @@ import com.emiLoan.EMILoan.service.interfaces.AuditService;
 import com.emiLoan.EMILoan.service.interfaces.BorrowerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -108,4 +110,15 @@ public class BorrowerServiceImpl implements BorrowerService {
         return borrowerProfileRepository.findByUser_EmailWithUser(email)
                 .orElseThrow(() -> new BusinessRuleException("Borrower profile not found for the authenticated user."));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<BorrowerResponse> getAllBorrowers(Pageable pageable) {
+        log.info("Fetching paginated list of borrowers: Page {}, Size {}",
+                pageable.getPageNumber(), pageable.getPageSize());
+
+        return borrowerProfileRepository.findAll(pageable)
+                .map(borrowerProfileMapper::toResponse);
+    }
+
 }

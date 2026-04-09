@@ -8,17 +8,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface PaymentService {
 
     PaymentResponse makePayment(PaymentRequest request,String email);
 
-    List<PaymentHistoryResponse> getAllPayments(String email);
+    Page<PaymentHistoryResponse> getAllPayments(String email,Pageable pageable);
 
     PaymentHistoryResponse getPaymentHistory(String loanCode, String requesterEmail);
 
     PaymentResponse forecloseLoan(ForeclosureRequest request, String email);
 
-    List<PaymentHistoryResponse> getBorrowerPaymentHistory(String borrowerEmail, Pageable pageable);
+    Page<PaymentHistoryResponse> getBorrowerPaymentHistory(String borrowerEmail, Pageable pageable);
 }

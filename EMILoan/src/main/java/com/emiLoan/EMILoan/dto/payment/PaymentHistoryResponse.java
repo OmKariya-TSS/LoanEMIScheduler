@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaymentHistoryResponse {
     private String loanCode;
     private BigDecimal totalAmountPaid;

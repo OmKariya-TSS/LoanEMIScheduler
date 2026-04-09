@@ -25,7 +25,6 @@ import com.emiLoan.EMILoan.strategy.payment.PaymentStrategyFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -192,25 +191,21 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PaymentHistoryResponse> getAllPayments(String email) {
+    public Page<PaymentHistoryResponse> getAllPayments(String email,Pageable pageable) {
         User profile = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessRuleException("User session invalid"));
-        return loanRepository.findAll().stream()
-                .map(this::getHistoryForLoan)
-                .collect(Collectors.toList());
+        return loanRepository.findAll(pageable).map(this::getHistoryForLoan);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<PaymentHistoryResponse> getBorrowerPaymentHistory(String borrowerEmail, Pageable pageable) {
+    public Page<PaymentHistoryResponse> getBorrowerPaymentHistory(String borrowerEmail, Pageable pageable) {
         User profile = userRepository.findByEmail(borrowerEmail)
                 .orElseThrow(() -> new BusinessRuleException("User session invalid"));
 
         Page<Loan> loanPage = loanRepository.findByBorrowerEmail(borrowerEmail, pageable);
 
-        return loanPage.stream()
-                .map(this::getHistoryForLoan)
-                .collect(Collectors.toList());
+        return loanPage.map(this::getHistoryForLoan);
     }
 
     private PaymentHistoryResponse getHistoryForLoan(Loan loan) {

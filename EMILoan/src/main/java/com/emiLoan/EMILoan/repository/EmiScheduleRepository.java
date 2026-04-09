@@ -20,7 +20,7 @@ import java.util.UUID;
 public interface EmiScheduleRepository extends JpaRepository<EmiSchedule, UUID> {
     List<EmiSchedule> findByDueDateBeforeAndStatus(LocalDate date, EmiStatus status);
 
-    boolean existsByEmiCode(String emiCode);
+    List<EmiSchedule> findByStatus(EmiStatus status);
 
     Optional<EmiSchedule> findByEmiCode(String emiCode);
 

@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -73,6 +75,20 @@ public class BorrowerController {
         return ResponseEntity.ok(ApiResponse.of(
                 HttpStatus.OK,
                 "Borrower profile retrieved for user code: " + userCode,
+                httpServletRequest.getRequestURI(),
+                response));
+    }
+
+    @GetMapping("/admin/all")
+    @PreAuthorize("hasAnyRole('ADMIN', 'LOAN_OFFICER')")
+    public ResponseEntity<ApiResponse<Page<BorrowerResponse>>> getAllBorrowers(
+            Pageable pageable,
+            HttpServletRequest httpServletRequest
+    ) {
+        Page<BorrowerResponse> response = borrowerService.getAllBorrowers(pageable);
+        return ResponseEntity.ok(ApiResponse.of(
+                HttpStatus.OK,
+                "All borrowers retrieved successfully",
                 httpServletRequest.getRequestURI(),
                 response));
     }

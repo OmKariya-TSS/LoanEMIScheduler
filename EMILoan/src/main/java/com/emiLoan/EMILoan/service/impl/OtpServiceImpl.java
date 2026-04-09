@@ -37,7 +37,7 @@ public class OtpServiceImpl implements OtpService {
                 .build();
 
         otpTokenRepository.save(otpToken);
-//        log.info("Generated {} OTP for {}", purpose, email);
+        log.info("Generated {} OTP for {}", purpose, email);
 
         return otpCode;
     }

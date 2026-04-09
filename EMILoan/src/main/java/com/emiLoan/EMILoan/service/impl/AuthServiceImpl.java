@@ -38,6 +38,8 @@ import com.emiLoan.EMILoan.service.interfaces.OtpService;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.emiLoan.EMILoan.common.constants.AppConstants.BEARER_PREFIX;
+
 
 @Slf4j
 @Service
@@ -217,7 +219,7 @@ public class AuthServiceImpl implements AuthService {
 
         return AuthResponse.builder()
                 .accessToken(token)
-                .tokenType("Bearer")
+                .tokenType(BEARER_PREFIX)
                 .user(userMapper.toShort(user))
                 .build();
     }
